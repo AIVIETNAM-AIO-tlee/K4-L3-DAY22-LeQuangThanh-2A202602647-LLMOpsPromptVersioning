@@ -72,8 +72,8 @@ Mở tệp `.env` và điền các giá trị sau:
 
 ```env
 # LangSmith — bắt buộc cho tất cả các bước
-LANGSMITH_API_KEY=lsv2_...
-LANGSMITH_PROJECT=day22-lab
+LANGCHAIN_API_KEY=lsv2_...
+LANGCHAIN_PROJECT=day22-lab
 LANGCHAIN_TRACING_V2=true
 
 # Chọn một trong các provider bên dưới
@@ -208,7 +208,7 @@ cd src && python run_all.py --step 3
 
 ### 1. Tạo GitHub repository
 
-Tạo repository public mới trên GitHub với tên ví dụ `day22-langsmith-lab`.
+Tạo repository public mới trên GitHub, đặt tên **đúng quy ước** trong [SUBMISSION.md](SUBMISSION.md), ví dụ `K4-L3-DAY22-NguyenVanA-2A20260000-LLMOpsPromptVersioning`.
 
 ### 2. Thu thập bằng chứng (evidence)
 
@@ -237,8 +237,11 @@ Ví dụ cụ thể:
 
 ```bash
 python 02_prompt_hub_ab_routing.py | tee ../evidence/02_ab_routing_log.txt
-python 04_guardrails_validator.py  | tee ../evidence/04_pii_demo_log.txt
+# Bước 4 in cả 2 demo (PII + JSON) → ghi ra cả 2 tệp evidence trong 1 lần chạy
+python 04_guardrails_validator.py  | tee ../evidence/04_pii_demo_log.txt ../evidence/04_json_demo_log.txt
 ```
+
+> **Windows:** dùng **Git Bash** để chạy lệnh `tee`, và chạy `export PYTHONUTF8=1` một lần trước đó (PowerShell: `$env:PYTHONUTF8=1`). Nếu không, log có emoji sẽ lỗi `UnicodeEncodeError` khi ghi ra file.
 
 ### 4. Push lên GitHub và nộp
 
@@ -246,7 +249,7 @@ python 04_guardrails_validator.py  | tee ../evidence/04_pii_demo_log.txt
 git init
 git add .
 git commit -m "Day 22: LangSmith + Prompt Versioning lab submission"
-git remote add origin https://github.com/<tên-của-bạn>/day22-langsmith-lab.git
+git remote add origin https://github.com/<tên-của-bạn>/<tên-repo-theo-SUBMISSION.md>.git
 git push -u origin main
 ```
 
@@ -257,12 +260,12 @@ Nộp URL GitHub repository và URL LangSmith project của bạn qua cổng n�
 ## Tips và lưu ý
 
 **LangSmith tracing — đặt biến môi trường đúng thứ tự:**
-Các biến `LANGCHAIN_TRACING_V2`, `LANGSMITH_API_KEY`, và `LANGSMITH_PROJECT` phải được đặt **trước khi import bất kỳ thứ gì từ LangChain**. Nếu import trước khi đặt biến, tracing sẽ không hoạt động.
+Các biến `LANGCHAIN_TRACING_V2`, `LANGCHAIN_API_KEY`, và `LANGCHAIN_PROJECT` phải được đặt **trước khi import bất kỳ thứ gì từ LangChain**. Nếu import trước khi đặt biến, tracing sẽ không hoạt động.
 
 ```python
 import os
 os.environ["LANGCHAIN_TRACING_V2"] = "true"   # Phải đặt trước
-os.environ["LANGSMITH_API_KEY"]    = "..."     # Phải đặt trước
+os.environ["LANGCHAIN_API_KEY"]    = "..."     # Phải đặt trước
 from langchain_core.prompts import ChatPromptTemplate  # Sau đó mới import
 ```
 

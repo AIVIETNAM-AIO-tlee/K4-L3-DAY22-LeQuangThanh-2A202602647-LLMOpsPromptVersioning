@@ -1,9 +1,9 @@
-# Lab Requirements — Day 22: LangSmith + Prompt Versioning
+# Yêu cầu cài đặt — Day 22: LangSmith + Prompt Versioning
 
-## Python Version
-Python 3.10 or higher
+## Phiên bản Python
+Python 3.10 trở lên
 
-## Install All Dependencies
+## Cài đặt toàn bộ thư viện
 
 ```bash
 pip install -r requirements.txt
@@ -28,55 +28,63 @@ datasets>=2.0.0
 numpy>=1.25.0
 ```
 
-## Package Purposes
+## Công dụng của từng thư viện
 
-| Package | Used For |
+| Thư viện | Dùng để |
 |---------|---------|
-| `langchain` | Core LLM framework |
-| `langchain-openai` | ChatOpenAI, OpenAIEmbeddings |
-| `langchain-community` | FAISS vectorstore integration |
-| `langchain-text-splitters` | RecursiveCharacterTextSplitter |
-| `langsmith` | LangSmith tracing, Prompt Hub client |
-| `openai` | Direct OpenAI API calls |
-| `faiss-cpu` | Similarity search index |
-| `ragas` | RAG evaluation metrics |
-| `guardrails-ai` | Output validation framework |
-| `python-dotenv` | Load `.env` file |
-| `tiktoken` | Token counting for text splitters |
-| `datasets` | Required by RAGAS internally |
-| `numpy` | Averaging RAGAS score lists |
+| `langchain` | Framework LLM cốt lõi |
+| `langchain-openai` | `ChatOpenAI`, `OpenAIEmbeddings` |
+| `langchain-community` | Tích hợp vector store FAISS |
+| `langchain-text-splitters` | `RecursiveCharacterTextSplitter` |
+| `langsmith` | LangSmith tracing, client Prompt Hub |
+| `openai` | Gọi trực tiếp OpenAI API |
+| `faiss-cpu` | Chỉ mục tìm kiếm tương đồng (similarity search) |
+| `ragas` | Các chỉ số đánh giá RAG |
+| `guardrails-ai` | Framework kiểm định đầu ra (output validation) |
+| `python-dotenv` | Đọc tệp `.env` |
+| `tiktoken` | Đếm token cho text splitter |
+| `datasets` | RAGAS cần dùng bên trong |
+| `numpy` | Tính trung bình danh sách điểm RAGAS |
 
-## Important Version Notes
+## Lưu ý quan trọng về phiên bản
 
 ### RAGAS 0.4.x
-- Use `from ragas.metrics import faithfulness, answer_relevancy, ...` (NOT from `ragas.metrics.collections`)
-- `result[metric_name]` returns a **list** of floats for multiple samples — use `numpy.mean()` to average
-- Pass `llm=` and `embeddings=` to the `evaluate()` function, not to metric constructors
+- Dùng `from ragas.metrics import faithfulness, answer_relevancy, ...` (KHÔNG import từ `ragas.metrics.collections`)
+- `result[metric_name]` trả về một **list** các số float khi có nhiều sample — dùng `numpy.mean()` để tính trung bình
+- Truyền `llm=` và `embeddings=` vào hàm `evaluate()`, không truyền vào constructor của metric
 
 ### Guardrails AI 0.10.x
-- `on_fail` parameter belongs in the **validator constructor**: `MyValidator(on_fail=OnFailAction.FIX)`
-- `Guard.use()` accepts validator **instances**, not classes
-- `Guard.validate(text)` is the main entry point
+- Tham số `on_fail` thuộc về **constructor của validator**: `MyValidator(on_fail=OnFailAction.FIX)`
+- `Guard.use()` nhận **instance** của validator, không nhận class
+- `Guard.validate(text)` là hàm gọi chính
+- Với `OnFailAction.FIX`, validator phải trả về `FailResult(error_message=..., fix_value=...)` — Guardrails thay output bằng `fix_value`. `PassResult(value_override=...)` **không** thay đổi output
 
 ### LangChain 0.3.x
-- Use `ChatOpenAI(api_key=..., base_url=..., model=...)` for custom endpoints
-- Use `OpenAIEmbeddings(api_key=..., base_url=..., model=...)` for custom embedding endpoints
+- Dùng `ChatOpenAI(api_key=..., base_url=..., model=...)` cho endpoint tùy chỉnh
+- Dùng `OpenAIEmbeddings(api_key=..., base_url=..., model=...)` cho endpoint embedding tùy chỉnh
 
-## Environment Variables
+## Biến môi trường
 
-Copy this to your `.env` file:
+Sao chép `.env.example` thành `.env` rồi điền giá trị. Các biến tối thiểu:
 
+```env
+LANGCHAIN_TRACING_V2=true
+LANGCHAIN_API_KEY=lsv2_...
+LANGCHAIN_PROJECT=day22-lab
+PROVIDER=openai
+OPENAI_API_KEY=sk-...
+```
 
-> ⚠️ **Never commit `.env` to git.** Add it to `.gitignore`.
+> ⚠️ **Không bao giờ commit `.env` lên git.** Hãy thêm nó vào `.gitignore`.
 
-## Verify Installation
+## Kiểm tra cài đặt
 
-Run the config check:
+Chạy lệnh kiểm tra cấu hình:
 ```bash
 python config.py
 ```
 
-Expected output:
+Kết quả mong đợi:
 ```
 ✅ Config loaded successfully
    LangSmith project : your-project-name
