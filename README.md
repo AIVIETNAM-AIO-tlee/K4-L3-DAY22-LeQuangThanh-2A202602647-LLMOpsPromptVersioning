@@ -53,6 +53,7 @@ Trước khi bắt đầu, hãy đảm bảo bạn đã có:
 
 ```bash
 pip install -r requirements.txt
+pip install "langchain-community<0.4"   # bắt buộc: bản 0.4 làm import ragas lỗi
 cp .env.example .env             # điền LANGCHAIN_API_KEY, PROVIDER và key của provider
 cd src && python config.py       # phải in: ✅ Config OK
 ```
@@ -150,7 +151,7 @@ Guard().use(PIIDetector(), on_fail=OnFailAction.FIX)
 ```
 
 **Lưu ý phiên bản thư viện:**
-- `langchain-community` phải `< 0.4` (đã ghim trong `requirements.txt`): bản 0.4 làm `import ragas` lỗi `No module named 'langchain_community.chat_models.vertexai'`.
+- `langchain-community` phải `< 0.4` (chạy `pip install "langchain-community<0.4"` sau khi cài `requirements.txt`): bản 0.4 làm `import ragas` lỗi `No module named 'langchain_community.chat_models.vertexai'`.
 - RAGAS 0.4: `result[metric_name]` trả về **list** điểm theo từng sample → dùng `numpy.mean()`; truyền `llm=` và `embeddings=` vào `evaluate()`. Cảnh báo deprecated khi import `ragas.metrics` có thể bỏ qua.
 - Guardrails 0.11: với `OnFailAction.FIX`, chỉ `FailResult(fix_value=...)` mới thay được output; `PassResult(value_override=...)` **không** có tác dụng.
 

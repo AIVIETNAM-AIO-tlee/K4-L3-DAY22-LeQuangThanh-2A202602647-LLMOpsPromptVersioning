@@ -17,6 +17,7 @@ python -m venv venv
 source venv/bin/activate        # macOS / Linux / Git Bash
 # venv\Scripts\activate         # Windows cmd / PowerShell
 pip install -r requirements.txt
+pip install "langchain-community<0.4"   # bắt buộc: bản 0.4 làm import ragas lỗi
 ```
 
 > Lần đầu cài mất 5–10 phút. Trong lúc chờ, làm bước 2.
@@ -329,7 +330,7 @@ python -m json.tool ../evidence/03_ragas_report.json
 ### Cần làm
 Mở `src/04_guardrails_validator.py`.
 
-> **Quan trọng nhất:** với `on_fail=OnFailAction.FIX`, Guardrails chỉ thay output bằng `fix_value` của **`FailResult`**. Trả về `PassResult(...)` thì output giữ nguyên input — PII **không** bị che dù log vẫn in "Đã redact".
+> **Quan trọng nhất:** với `on_fail=OnFailAction.FIX`, Guardrails chỉ thay output bằng `fix_value` của **`FailResult`**. Trả về `PassResult(...)` thì output giữ nguyên input — PII **không** bị che dù log vẫn in "Đã redact". Docstring và comment TODO trong file đang gợi ý `PassResult(value_override=...)` — **hãy dùng `FailResult(fix_value=...)` như bên dưới**.
 
 **1. `PIIDetector.validate()`** — duyệt `self.PII_PATTERNS` (đã cho sẵn):
 
