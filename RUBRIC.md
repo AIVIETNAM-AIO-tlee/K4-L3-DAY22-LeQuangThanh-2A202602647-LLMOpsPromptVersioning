@@ -144,26 +144,7 @@
 
 ## Danh sách kiểm tra trước khi nộp bài
 
-**Tệp mã nguồn — tất cả phải chạy được, không có lỗi:**
-- [ ] `src/01_langsmith_rag_pipeline.py`
-- [ ] `src/02_prompt_hub_ab_routing.py`
-- [ ] `src/03_ragas_evaluation.py`
-- [ ] `src/04_guardrails_validator.py`
-- [ ] `data/ragas_report.json` — tồn tại và chứa điểm của cả V1 lẫn V2
-
-**Thư mục bằng chứng — tất cả đều bắt buộc:**
-- [ ] `evidence/01_langsmith_traces.png` — Giao diện LangSmith với ít nhất 50 traces hiển thị
-- [ ] `evidence/02_prompt_hub.png` — Giao diện Prompt Hub hiển thị 2 phiên bản prompt được đặt tên
-- [ ] `evidence/02_ab_routing_log.txt` — Log console của A/B routing (50 câu truy vấn, có nhãn v1/v2)
-- [ ] `evidence/03_ragas_scores.png` — Output terminal hiển thị bảng so sánh V1 vs V2
-- [ ] `evidence/03_ragas_report.json` — Bản sao của `data/ragas_report.json`
-- [ ] `evidence/04_pii_demo_log.txt` — Output console của các test case PII
-- [ ] `evidence/04_json_demo_log.txt` — Output console của các test case sửa JSON
-
-**Nộp bài:**
-- [ ] URL GitHub repository public đã được nộp
-- [ ] URL LangSmith project đã được nộp (hiển thị tổng cộng ≥ 100 traces)
-- [ ] Không có tệp `.env` nào được commit; không có API key nào trong mã nguồn
+Xem mục **Kiểm tra trước khi nộp** trong [SUBMISSION.md](SUBMISSION.md) (đủ 7 tệp evidence, ≥ 100 traces trên LangSmith, không lộ API key).
 
 **Lưu ý quan trọng: Nếu phát hiện API key trong mã nguồn đã commit, bài bị trừ tự động 10 điểm.**
 

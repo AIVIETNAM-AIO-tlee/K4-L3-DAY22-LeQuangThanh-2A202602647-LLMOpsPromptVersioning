@@ -16,7 +16,6 @@ Ví dụ: `K4-L3-DAY22-NguyenDongHung-2A20260000-LLMOpsPromptVersioning`
 
 - Viết **không dấu, không khoảng trắng**, các phần ngăn cách bằng dấu `-`.
 - Ngày học dùng hai chữ số: `DAY22`.
-- Tên repo trong [README.md](README.md) / [Guide.md](Guide.md) (`day22-langsmith-lab`) chỉ là ví dụ — **bắt buộc dùng tên theo quy ước trên**.
 
 ---
 
@@ -89,4 +88,4 @@ python -m json.tool evidence/03_ragas_report.json > /dev/null && echo "OK: JSON 
 
 Sau khi push, mở repo bằng **cửa sổ ẩn danh** để chắc chắn repo public và thấy đủ file.
 
-Xem thêm checklist đầy đủ ở cuối [RUBRIC.md](RUBRIC.md).
+Nếu `python` báo `UnicodeEncodeError` khi lưu log trên Windows: xem Checkpoint 0 trong [CHECKPOINTS.md](CHECKPOINTS.md) (bật `PYTHONUTF8=1`).

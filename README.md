@@ -3,8 +3,7 @@
 >
 > | Tài liệu | Nội dung |
 > |---|---|
-> | [Guide.md](Guide.md) | Hướng dẫn từng bước |
-> | [CHECKPOINTS.md](CHECKPOINTS.md) | Các checkpoint, sản phẩm và cách tự kiểm tra |
+> | [CHECKPOINTS.md](CHECKPOINTS.md) | **Hướng dẫn làm bài từng bước**: cần làm gì, sản phẩm, cách tự kiểm tra |
 > | [RUBRIC.md](RUBRIC.md) | Tiêu chí chấm điểm, điểm thưởng (tối đa +10) |
 > | [SUBMISSION.md](SUBMISSION.md) | Tên repo, cấu trúc nộp bài, nơi nộp, deadline |
 > | [RULES.md](RULES.md) | Quy định sử dụng AI, sao chép, nộp muộn, bảo mật API key |
@@ -50,67 +49,15 @@ Trước khi bắt đầu, hãy đảm bảo bạn đã có:
 
 ---
 
-## Cài đặt môi trường
-
-### 1. Cài thư viện
+## Cài đặt nhanh
 
 ```bash
 pip install -r requirements.txt
+cp .env.example .env             # điền LANGCHAIN_API_KEY, PROVIDER và key của provider
+cd src && python config.py       # phải in: ✅ Config OK
 ```
 
-> Lần đầu cài có thể mất 5–10 phút do nhiều gói phụ thuộc.
-
-### 2. Cấu hình tệp `.env`
-
-Sao chép tệp mẫu và điền thông tin của bạn:
-
-```bash
-cp .env.example .env
-```
-
-Mở tệp `.env` và điền các giá trị sau:
-
-```env
-# LangSmith — bắt buộc cho tất cả các bước
-LANGCHAIN_API_KEY=lsv2_...
-LANGCHAIN_PROJECT=day22-lab
-LANGCHAIN_TRACING_V2=true
-
-# Chọn một trong các provider bên dưới
-PROVIDER=openai
-
-# OpenAI (nếu dùng PROVIDER=openai)
-OPENAI_API_KEY=sk-...
-
-# Google Gemini (nếu dùng PROVIDER=gemini)
-GOOGLE_API_KEY=AIza...
-
-# Anthropic (nếu dùng PROVIDER=anthropic)
-ANTHROPIC_API_KEY=sk-ant-...
-
-# OpenRouter (nếu dùng PROVIDER=openrouter)
-OPENROUTER_API_KEY=sk-or-...
-```
-
-### 3. Chọn LLM provider
-
-Đặt biến `PROVIDER` trong `.env` thành một trong các giá trị sau:
-
-| Giá trị      | Nhà cung cấp      | Ghi chú                         |
-|--------------|-------------------|---------------------------------|
-| `openai`     | OpenAI GPT        | Mặc định, ổn định nhất          |
-| `gemini`     | Google Gemini     | Miễn phí với quota giới hạn     |
-| `anthropic`  | Anthropic Claude  | Chất lượng cao                  |
-| `ollama`     | Ollama (local)    | Không cần API key, cần GPU/CPU  |
-| `openrouter` | OpenRouter        | Tổng hợp nhiều model            |
-
-### 4. Xác minh cài đặt
-
-```bash
-cd src && python config.py
-```
-
-Nếu không có lỗi xuất hiện, bạn đã sẵn sàng bắt đầu.
+Hướng dẫn chi tiết (tạo venv, lấy API key LangSmith, chọn provider, lưu ý cho Windows) ở **Checkpoint 0** trong [CHECKPOINTS.md](CHECKPOINTS.md).
 
 ---
 
@@ -142,9 +89,11 @@ Lab/
 │   └── 04_json_demo_log.txt
 ├── .env.example                        # Template biến môi trường
 ├── requirements.txt
-├── README.md
-├── RUBRIC.md
-└── Guide.md
+├── README.md                       # Tổng quan (file này)
+├── CHECKPOINTS.md                  # Hướng dẫn làm bài từng bước
+├── RUBRIC.md                       # Tiêu chí chấm điểm
+├── SUBMISSION.md                   # Cách nộp bài
+└── RULES.md                        # Quy định làm bài
 ```
 
 ---
@@ -170,90 +119,7 @@ Lab được chia thành 4 nhiệm vụ, mỗi nhiệm vụ 25 điểm (tổng 1
 
 ---
 
-## Chạy lab
-
-### Chạy từng bước riêng lẻ
-
-```bash
-cd src
-
-# Bước 1: RAG Pipeline với LangSmith tracing
-python 01_langsmith_rag_pipeline.py
-
-# Bước 2: Prompt Hub và A/B routing
-python 02_prompt_hub_ab_routing.py
-
-# Bước 3: RAGAS evaluation (mất 15–30 phút)
-python 03_ragas_evaluation.py
-
-# Bước 4: Guardrails AI validators
-python 04_guardrails_validator.py
-```
-
-### Chạy toàn bộ lab
-
-```bash
-cd src && python run_all.py
-```
-
-### Chạy một bước cụ thể
-
-```bash
-cd src && python run_all.py --step 3
-```
-
----
-
-## Nộp bài
-
-### 1. Tạo GitHub repository
-
-Tạo repository public mới trên GitHub, đặt tên **đúng quy ước** trong [SUBMISSION.md](SUBMISSION.md), ví dụ `K4-L3-DAY22-NguyenVanA-2A20260000-LLMOpsPromptVersioning`.
-
-### 2. Thu thập bằng chứng (evidence)
-
-Đảm bảo thư mục `evidence/` chứa đầy đủ 7 tệp sau:
-
-```
-evidence/
-├── 01_langsmith_traces.png      ← Ảnh chụp màn hình LangSmith dashboard (≥ 50 traces)
-├── 02_prompt_hub.png            ← Ảnh chụp màn hình Prompt Hub (2 phiên bản)
-├── 02_ab_routing_log.txt        ← Output console của bước 2
-├── 03_ragas_scores.png          ← Ảnh chụp terminal hiển thị điểm RAGAS
-├── 03_ragas_report.json         ← Báo cáo JSON từ RAGAS
-├── 04_pii_demo_log.txt          ← Output console của PII detector
-└── 04_json_demo_log.txt         ← Output console của JSON formatter
-```
-
-### 3. Lưu output console vào tệp
-
-Sử dụng lệnh `tee` để vừa in ra màn hình vừa lưu vào tệp:
-
-```bash
-python script.py | tee evidence/output.txt
-```
-
-Ví dụ cụ thể:
-
-```bash
-python 02_prompt_hub_ab_routing.py | tee ../evidence/02_ab_routing_log.txt
-# Bước 4 in cả 2 demo (PII + JSON) → ghi ra cả 2 tệp evidence trong 1 lần chạy
-python 04_guardrails_validator.py  | tee ../evidence/04_pii_demo_log.txt ../evidence/04_json_demo_log.txt
-```
-
-> **Windows:** dùng **Git Bash** để chạy lệnh `tee`, và chạy `export PYTHONUTF8=1` một lần trước đó (PowerShell: `$env:PYTHONUTF8=1`). Nếu không, log có emoji sẽ lỗi `UnicodeEncodeError` khi ghi ra file.
-
-### 4. Push lên GitHub và nộp
-
-```bash
-git init
-git add .
-git commit -m "Day 22: LangSmith + Prompt Versioning lab submission"
-git remote add origin https://github.com/<tên-của-bạn>/<tên-repo-theo-SUBMISSION.md>.git
-git push -u origin main
-```
-
-Nộp URL GitHub repository và URL LangSmith project của bạn qua cổng nộp bài của khóa học.
+Cách làm từng nhiệm vụ: xem [CHECKPOINTS.md](CHECKPOINTS.md). Cách nộp bài: xem [SUBMISSION.md](SUBMISSION.md).
 
 ---
 
@@ -282,6 +148,11 @@ Guard().use(PIIDetector(on_fail=OnFailAction.FIX))
 # SAI — sẽ không hoạt động đúng
 Guard().use(PIIDetector(), on_fail=OnFailAction.FIX)
 ```
+
+**Lưu ý phiên bản thư viện:**
+- `langchain-community` phải `< 0.4` (đã ghim trong `requirements.txt`): bản 0.4 làm `import ragas` lỗi `No module named 'langchain_community.chat_models.vertexai'`.
+- RAGAS 0.4: `result[metric_name]` trả về **list** điểm theo từng sample → dùng `numpy.mean()`; truyền `llm=` và `embeddings=` vào `evaluate()`. Cảnh báo deprecated khi import `ragas.metrics` có thể bỏ qua.
+- Guardrails 0.11: với `OnFailAction.FIX`, chỉ `FailResult(fix_value=...)` mới thay được output; `PassResult(value_override=...)` **không** có tác dụng.
 
 **Bảo mật — không bao giờ commit `.env`:**
 Tệp `.env` chứa API key nhạy cảm. Đảm bảo `.gitignore` đã có dòng `.env` trước khi push lên GitHub. Chỉ commit tệp `.env.example` (không chứa giá trị thật). Vi phạm quy tắc này sẽ bị trừ 10 điểm tự động.
