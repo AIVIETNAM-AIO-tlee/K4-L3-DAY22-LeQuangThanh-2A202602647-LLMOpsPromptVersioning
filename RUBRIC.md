@@ -166,3 +166,16 @@
 - [ ] Không có tệp `.env` nào được commit; không có API key nào trong mã nguồn
 
 **Lưu ý quan trọng: Nếu phát hiện API key trong mã nguồn đã commit, bài bị trừ tự động 10 điểm.**
+
+---
+
+## Quy đổi điểm cuối cùng
+
+| Thành phần | Điểm |
+|---|---|
+| Phần bắt buộc (Nhiệm vụ 1–4) | tối đa 100đ |
+| Điểm thưởng (Nhiệm vụ 3 + Bằng chứng + Mã nguồn, tổng có thể đạt 15đ) | **cộng tối đa 10đ** |
+| Trừ điểm nộp muộn / vi phạm | theo [RULES.md](RULES.md) |
+
+- Điểm thưởng là điểm cộng cho chất lượng bài lab, **không** phải điểm phát biểu, giơ tay hay pitching.
+- Repo đặt sai tên hoặc thiếu file theo [SUBMISSION.md](SUBMISSION.md) có thể không được chấm.

@@ -1,3 +1,14 @@
+> **📌 Hình thức: BÀI CÁ NHÂN** — mỗi học viên tự làm và tự nộp 1 repo theo quy ước đặt tên.
+> **⏰ Thời lượng:** ~3–4 giờ · **Deadline:** 23:59 ngày học lab (GMT+7)
+>
+> | Tài liệu | Nội dung |
+> |---|---|
+> | [Guide.md](Guide.md) | Hướng dẫn từng bước |
+> | [CHECKPOINTS.md](CHECKPOINTS.md) | Các checkpoint, sản phẩm và cách tự kiểm tra |
+> | [RUBRIC.md](RUBRIC.md) | Tiêu chí chấm điểm, điểm thưởng (tối đa +10) |
+> | [SUBMISSION.md](SUBMISSION.md) | Tên repo, cấu trúc nộp bài, nơi nộp, deadline |
+> | [RULES.md](RULES.md) | Quy định sử dụng AI, sao chép, nộp muộn, bảo mật API key |
+
 # Chào mừng các bạn đến với Day 22: LangSmith + Prompt Versioning
 
 ## Tổng quan
@@ -132,7 +143,7 @@ Lab/
 ├── .env.example                        # Template biến môi trường
 ├── requirements.txt
 ├── README.md
-├── rubric.md
+├── RUBRIC.md
 └── Guide.md
 ```
 
