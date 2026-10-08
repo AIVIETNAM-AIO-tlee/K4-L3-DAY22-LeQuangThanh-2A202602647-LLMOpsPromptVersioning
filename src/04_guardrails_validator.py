@@ -58,7 +58,10 @@ class PIIDetector(Validator):
 
     def validate(self, value: str, metadata: dict):
         """
-        Tìm PII trong value; nếu phát hiện, redact và trả về PassResult với text đã xử lý.
+        Tìm PII trong value; nếu phát hiện, redact và trả về FailResult với fix_value là text đã xử lý.
+
+        ⚠️ Với OnFailAction.FIX, Guardrails CHỈ thay output bằng FailResult.fix_value.
+           PassResult(value_override=...) KHÔNG có tác dụng → output giống hệt input.
 
         Bước:
           1. Copy value → redacted_text
@@ -66,8 +69,8 @@ class PIIDetector(Validator):
              - Tìm tất cả matches bằng re.findall(pattern, value)
              - Thay thế từng match bằng "[PII_TYPE_REDACTED]" trong redacted_text
              - Ghi lại (pii_type, match) vào found_pii
-          3. Nếu found_pii không rỗng → PassResult(value_override=redacted_text)
-          4. Nếu không tìm thấy PII → PassResult(value_override=value)
+          3. Nếu found_pii không rỗng → FailResult(error_message=..., fix_value=redacted_text)
+          4. Nếu không tìm thấy PII → PassResult()
         """
         redacted_text = value
         found_pii     = []
@@ -84,10 +87,10 @@ class PIIDetector(Validator):
 
         if found_pii:
             print(f"  ⚠️  Đã redact {len(found_pii)} PII: {[p[0] for p in found_pii]}")
-            # TODO: Trả về PassResult với value_override=redacted_text
+            # TODO: Trả về FailResult(error_message="Phát hiện PII", fix_value=redacted_text)
             return ...
 
-        # TODO: Không có PII → trả về PassResult với value gốc
+        # TODO: Không có PII → trả về PassResult() (giữ nguyên value)
         return ...
 
 
@@ -136,14 +139,17 @@ class JSONFormatter(Validator):
         Thử parse value thành JSON.
         Nếu thất bại, gọi _repair() rồi thử lại.
 
-        Trả về PassResult với JSON được format đẹp nếu thành công.
-        Trả về FailResult nếu JSON không thể sửa được.
+        - JSON hợp lệ sẵn          → PassResult()
+        - Sửa được                 → FailResult(error_message=..., fix_value=json.dumps(parsed, indent=2))
+        - Không sửa được           → FailResult(error_message=..., fix_value=<JSON dự phòng>)
+
+        ⚠️ Với OnFailAction.FIX, chỉ FailResult.fix_value mới thay được output.
         """
         # TODO: Thử parse JSON trực tiếp
         try:
-            parsed = ...   # json.loads(value)
-            # TODO: Trả về PassResult với json.dumps(parsed, indent=2)
-            return PassResult(value_override=...)
+            ...   # json.loads(value)
+            # TODO: JSON hợp lệ sẵn → trả về PassResult()
+            return ...
         except json.JSONDecodeError:
             pass
 
@@ -152,10 +158,12 @@ class JSONFormatter(Validator):
             repaired_text = self._repair(value)
             parsed        = ...   # json.loads(repaired_text)
             print(f"  🔧 JSON đã được sửa thành công")
-            # TODO: Trả về PassResult với json.dumps(parsed, indent=2)
-            return PassResult(value_override=...)
-        except json.JSONDecodeError as e:
-            return FailResult(error_message=f"JSON không hợp lệ sau khi sửa: {e}")
+            # TODO: Trả về FailResult(error_message="JSON lỗi, đã tự sửa", fix_value=json.dumps(parsed, indent=2))
+            return ...
+        except json.JSONDecodeError:
+            # Không sửa được → trả về JSON dự phòng để output vẫn là JSON hợp lệ
+            fallback = json.dumps({"error": "Không thể phân tích JSON", "raw": value[:200]}, ensure_ascii=False)
+            return FailResult(error_message="Không thể sửa JSON", fix_value=fallback)
 
 
 # ── 3. Demo: PII Guard ─────────────────────────────────────────────────────

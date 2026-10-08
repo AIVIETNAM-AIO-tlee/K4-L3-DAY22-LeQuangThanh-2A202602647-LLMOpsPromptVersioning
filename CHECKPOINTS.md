@@ -330,7 +330,7 @@ python -m json.tool ../evidence/03_ragas_report.json
 ### Cần làm
 Mở `src/04_guardrails_validator.py`.
 
-> **Quan trọng nhất:** với `on_fail=OnFailAction.FIX`, Guardrails chỉ thay output bằng `fix_value` của **`FailResult`**. Trả về `PassResult(...)` thì output giữ nguyên input — PII **không** bị che dù log vẫn in "Đã redact". Docstring và comment TODO trong file đang gợi ý `PassResult(value_override=...)` — **hãy dùng `FailResult(fix_value=...)` như bên dưới**.
+> **Quan trọng nhất:** với `on_fail=OnFailAction.FIX`, Guardrails chỉ thay output bằng `fix_value` của **`FailResult`**. Trả về `PassResult(...)` thì output giữ nguyên input — PII **không** bị che dù log vẫn in "Đã redact". Đừng dùng `PassResult(value_override=...)` (cách cũ, không có tác dụng ở Guardrails 0.11) — **dùng `FailResult(fix_value=...)` như bên dưới**.
 
 **1. `PIIDetector.validate()`** — duyệt `self.PII_PATTERNS` (đã cho sẵn):
 
