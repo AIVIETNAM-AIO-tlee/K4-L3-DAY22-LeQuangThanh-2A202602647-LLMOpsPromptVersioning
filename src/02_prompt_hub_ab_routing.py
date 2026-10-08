@@ -36,7 +36,9 @@ PROMPT_V2_NAME = "my-rag-prompt-v2"   # ví dụ: "nguyen-rag-v2"
 # ── 2. Định nghĩa 2 Prompt Templates ──────────────────────────────────────
 # TODO: Viết SYSTEM_V1 — phong cách ngắn gọn, trả lời 2-4 câu
 # Gợi ý: "Bạn là trợ lý AI hữu ích. Chỉ dùng context sau để trả lời.
-#          Giữ câu trả lời ngắn gọn (2-4 câu). ..."
+#          Giữ câu trả lời ngắn gọn (2-4 câu). ...\n\nContext:\n{context}"
+# ⚠️ BẮT BUỘC có {context} trong SYSTEM — thiếu thì LLM không nhận được tài liệu
+#    mà chương trình KHÔNG báo lỗi (câu trả lời bịa, điểm RAGAS thấp).
 SYSTEM_V1 = ...
 
 PROMPT_V1 = ChatPromptTemplate.from_messages([
@@ -46,7 +48,8 @@ PROMPT_V1 = ChatPromptTemplate.from_messages([
 
 # TODO: Viết SYSTEM_V2 — phong cách có cấu trúc, expert tone, 3-5 câu
 # Gợi ý: "Bạn là chuyên gia AI. Đọc kỹ context, xác định facts liên quan,
-#          viết câu trả lời rõ ràng và có tổ chức (3-5 câu). ..."
+#          viết câu trả lời rõ ràng và có tổ chức (3-5 câu). ...\n\nContext:\n{context}"
+# ⚠️ BẮT BUỘC có {context} (giống SYSTEM_V1)
 SYSTEM_V2 = ...
 
 PROMPT_V2 = ChatPromptTemplate.from_messages([

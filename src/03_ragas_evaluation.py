@@ -38,6 +38,8 @@ from qa_pairs import QA_PAIRS
 
 # ── 1. Prompt Templates (copy từ Bước 2) ──────────────────────────────────
 # TODO: Copy SYSTEM_V1 và SYSTEM_V2 mà bạn đã viết ở file 02_prompt_hub_ab_routing.py
+# ⚠️ Cả 2 phải chứa {context}, ví dụ kết thúc bằng "...\n\nContext:\n{context}"
+#    Thiếu {context} → LLM không thấy tài liệu, không báo lỗi, faithfulness/context_* rất thấp.
 SYSTEM_V1 = ...
 PROMPT_V1 = ChatPromptTemplate.from_messages([
     ("system", SYSTEM_V1),
