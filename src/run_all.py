@@ -11,7 +11,14 @@ import argparse
 import importlib
 from pathlib import Path
 
+# Đảm bảo UTF-8 cho stdout trên Windows
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
+
 sys.path.insert(0, str(Path(__file__).parent))
+import config
 
 
 STEPS = {
